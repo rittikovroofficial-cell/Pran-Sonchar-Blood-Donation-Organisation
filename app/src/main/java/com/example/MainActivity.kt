@@ -32,6 +32,7 @@ import com.example.ui.screens.CreateRequestScreen
 import com.example.ui.screens.EmergencyRequestsScreen
 import com.example.ui.screens.FindDonorsScreen
 import com.example.ui.screens.HomeScreen
+import com.example.ui.screens.LoginScreen
 import com.example.ui.screens.RegisterDonorScreen
 import com.example.ui.screens.UserDashboardScreen
 import com.example.ui.theme.MyApplicationTheme
@@ -71,11 +72,13 @@ fun PranSancharApp(viewModel: MainViewModel) {
     }
   }
 
+  val isSubScreen = showAdminScreen || currentScreen == Screen.REGISTER_DONOR || currentScreen == Screen.CREATE_REQUEST || currentScreen == Screen.LOGIN
+
   // Handle back navigation
-  BackHandler(enabled = showAdminScreen || currentScreen != Screen.HOME) {
+  BackHandler(enabled = isSubScreen || currentScreen != Screen.HOME) {
     if (showAdminScreen) {
       showAdminScreen = false
-    } else if (currentScreen == Screen.REGISTER_DONOR || currentScreen == Screen.CREATE_REQUEST) {
+    } else if (currentScreen == Screen.REGISTER_DONOR || currentScreen == Screen.CREATE_REQUEST || currentScreen == Screen.LOGIN) {
       viewModel.navigateTo(Screen.HOME)
     } else {
       viewModel.navigateTo(Screen.HOME)
@@ -87,7 +90,7 @@ fun PranSancharApp(viewModel: MainViewModel) {
     topBar = {
       PranTopBar(
         language = language,
-        canNavigateBack = showAdminScreen || currentScreen == Screen.REGISTER_DONOR || currentScreen == Screen.CREATE_REQUEST,
+        canNavigateBack = isSubScreen,
         onNavigateBack = {
           if (showAdminScreen) {
             showAdminScreen = false
@@ -100,7 +103,7 @@ fun PranSancharApp(viewModel: MainViewModel) {
       )
     },
     bottomBar = {
-      if (!showAdminScreen && currentScreen != Screen.REGISTER_DONOR && currentScreen != Screen.CREATE_REQUEST) {
+      if (!showAdminScreen && currentScreen != Screen.REGISTER_DONOR && currentScreen != Screen.CREATE_REQUEST && currentScreen != Screen.LOGIN) {
         PranBottomNav(
           currentScreen = currentScreen,
           language = language,
@@ -159,6 +162,12 @@ fun PranSancharApp(viewModel: MainViewModel) {
             Screen.CREATE_REQUEST -> CreateRequestScreen(
               viewModel = viewModel,
               onNavigateBack = { viewModel.navigateTo(Screen.REQUESTS) }
+            )
+
+            Screen.LOGIN -> LoginScreen(
+              viewModel = viewModel,
+              onLoginSuccess = { viewModel.navigateTo(Screen.DASHBOARD) },
+              onNavigateToRegister = { viewModel.navigateTo(Screen.REGISTER_DONOR) }
             )
           }
         }

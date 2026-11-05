@@ -25,6 +25,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Campaign
+import androidx.compose.material.icons.filled.Chat
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.HealthAndSafety
 import androidx.compose.material.icons.filled.Info
@@ -220,29 +222,201 @@ fun HomeScreen(
 
           Spacer(modifier = Modifier.height(8.dp))
 
-          Button(
-            onClick = { onNavigateToScreen(Screen.CREATE_REQUEST) },
-            modifier = Modifier
-              .fillMaxWidth()
-              .height(46.dp)
-              .testTag("home_emergency_request_button"),
-            colors = ButtonDefaults.buttonColors(
-              containerColor = Color(0xFFFFCC00),
-              contentColor = DarkNavy
-            ),
-            shape = RoundedCornerShape(12.dp)
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
           ) {
-            Icon(
-              imageVector = Icons.Default.Warning,
-              contentDescription = null,
-              modifier = Modifier.size(18.dp)
-            )
-            Spacer(modifier = Modifier.width(6.dp))
-            Text(
-              text = AppStrings.emergencyRequestBtn(language),
-              fontWeight = FontWeight.ExtraBold,
-              fontSize = 14.sp
-            )
+            Button(
+              onClick = { onNavigateToScreen(Screen.CREATE_REQUEST) },
+              modifier = Modifier
+                .weight(1.3f)
+                .height(46.dp)
+                .testTag("home_emergency_request_button"),
+              colors = ButtonDefaults.buttonColors(
+                containerColor = Color(0xFFFFCC00),
+                contentColor = DarkNavy
+              ),
+              shape = RoundedCornerShape(12.dp)
+            ) {
+              Icon(
+                imageVector = Icons.Default.Warning,
+                contentDescription = null,
+                modifier = Modifier.size(18.dp)
+              )
+              Spacer(modifier = Modifier.width(6.dp))
+              Text(
+                text = AppStrings.emergencyRequestBtn(language),
+                fontWeight = FontWeight.ExtraBold,
+                fontSize = 13.sp
+              )
+            }
+
+            OutlinedButton(
+              onClick = { onNavigateToScreen(Screen.LOGIN) },
+              modifier = Modifier
+                .weight(0.9f)
+                .height(46.dp)
+                .testTag("home_login_button"),
+              colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = Color.White
+              ),
+              border = BorderStroke(1.5.dp, Color.White),
+              shape = RoundedCornerShape(12.dp)
+            ) {
+              Icon(
+                imageVector = Icons.Default.People,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp)
+              )
+              Spacer(modifier = Modifier.width(4.dp))
+              Text(
+                text = if (language == AppLanguage.BENGALI) "লগইন" else "Sign In",
+                fontWeight = FontWeight.Bold,
+                fontSize = 12.sp
+              )
+            }
+          }
+        }
+      }
+    }
+
+    // 2. Download App Section
+    item {
+      Card(
+        modifier = Modifier
+          .fillMaxWidth()
+          .padding(horizontal = 16.dp, vertical = 10.dp)
+          .testTag("home_download_app_card"),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = DarkNavy),
+        elevation = CardDefaults.cardElevation(defaultElevation = 3.dp)
+      ) {
+        Column(modifier = Modifier.padding(16.dp)) {
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically
+          ) {
+            Box(
+              modifier = Modifier
+                .size(46.dp)
+                .clip(RoundedCornerShape(12.dp))
+                .background(BloodRedPrimary),
+              contentAlignment = Alignment.Center
+            ) {
+              Icon(
+                imageVector = Icons.Default.HealthAndSafety,
+                contentDescription = "Download App",
+                tint = Color.White,
+                modifier = Modifier.size(26.dp)
+              )
+            }
+
+            Spacer(modifier = Modifier.width(12.dp))
+
+            Column(modifier = Modifier.weight(1f)) {
+              Row(verticalAlignment = Alignment.CenterVertically) {
+                Text(
+                  text = AppStrings.downloadAppTitle(language),
+                  fontWeight = FontWeight.Bold,
+                  fontSize = 15.sp,
+                  color = Color.White
+                )
+                Spacer(modifier = Modifier.width(6.dp))
+                Box(
+                  modifier = Modifier
+                    .clip(RoundedCornerShape(4.dp))
+                    .background(Color(0xFFFFCC00))
+                    .padding(horizontal = 5.dp, vertical = 2.dp)
+                ) {
+                  Text(
+                    text = "APK",
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 9.sp,
+                    color = DarkNavy
+                  )
+                }
+              }
+              Text(
+                text = AppStrings.downloadAppDesc(language),
+                fontSize = 11.sp,
+                color = Color.White.copy(alpha = 0.85f),
+                lineHeight = 15.sp
+              )
+            }
+          }
+
+          Spacer(modifier = Modifier.height(14.dp))
+
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+          ) {
+            Button(
+              onClick = {
+                val appUrl = "https://ais-pre-i4qwndeqzvjjpmldngbia7-847336418732.asia-northeast1.run.app"
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                  data = Uri.parse(appUrl)
+                }
+                context.startActivity(intent)
+                viewModel.showToast(
+                  if (language == AppLanguage.BENGALI)
+                    "প্রাণ সঞ্চার মোবাইল অ্যাপ ডাউনলোড হচ্ছে..."
+                  else
+                    "Downloading Pran Sanchar App..."
+                )
+              },
+              modifier = Modifier
+                .weight(1.2f)
+                .height(42.dp)
+                .testTag("download_app_apk_button"),
+              colors = ButtonDefaults.buttonColors(
+                containerColor = BloodRedPrimary,
+                contentColor = Color.White
+              ),
+              shape = RoundedCornerShape(10.dp)
+            ) {
+              Icon(
+                imageVector = Icons.Default.Search,
+                contentDescription = null,
+                modifier = Modifier.size(16.dp)
+              )
+              Spacer(modifier = Modifier.width(6.dp))
+              Text(
+                text = AppStrings.downloadApkBtn(language),
+                fontWeight = FontWeight.Bold,
+                fontSize = 12.sp
+              )
+            }
+
+            OutlinedButton(
+              onClick = {
+                val shareText = """
+                  🩸 প্রাণ সঞ্চার রক্তদান সংস্থা (Pran Sanchar Blood Donation Organization)
+                  "রক্তের বন্ধনে, প্রাণের স্পন্দনে"
+                  জরুরি রক্তের প্রয়োজনে ও স্বেচ্ছায় রক্তদানে যুক্ত হতে সরাসরি আমাদের মোবাইল অ্যাপটি ডাউনলোড করুন:
+                  https://ais-pre-i4qwndeqzvjjpmldngbia7-847336418732.asia-northeast1.run.app
+                """.trimIndent()
+                val sendIntent = Intent().apply {
+                  action = Intent.ACTION_SEND
+                  putExtra(Intent.EXTRA_TEXT, shareText)
+                  type = "text/plain"
+                }
+                context.startActivity(Intent.createChooser(sendIntent, "Share Pran Sanchar App"))
+              },
+              modifier = Modifier
+                .weight(1f)
+                .height(42.dp)
+                .testTag("share_app_link_button"),
+              border = BorderStroke(1.dp, Color.White.copy(alpha = 0.6f)),
+              colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
+              shape = RoundedCornerShape(10.dp)
+            ) {
+              Text(
+                text = AppStrings.shareAppLinkBtn(language),
+                fontWeight = FontWeight.Bold,
+                fontSize = 11.sp
+              )
+            }
           }
         }
       }
@@ -563,61 +737,120 @@ fun HomeScreen(
               color = Color.White.copy(alpha = 0.85f)
             )
             Spacer(modifier = Modifier.height(14.dp))
+
+            // Contact Buttons Row (Call & WhatsApp)
             Row(
               modifier = Modifier.fillMaxWidth(),
               horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
+              // Direct Call
               Button(
                 onClick = {
                   val intent = Intent(Intent.ACTION_DIAL).apply {
-                    data = Uri.parse("tel:+8801700000000")
+                    data = Uri.parse("tel:+8801773326910")
                   }
                   context.startActivity(intent)
                 },
                 modifier = Modifier
-                  .weight(1f)
-                  .height(40.dp)
+                  .weight(1.1f)
+                  .height(42.dp)
                   .testTag("home_call_helpline_button"),
                 colors = ButtonDefaults.buttonColors(
                   containerColor = Color(0xFFFFCC00),
                   contentColor = DarkNavy
                 ),
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(10.dp)
               ) {
                 Icon(
                   imageVector = Icons.Default.Phone,
-                  contentDescription = null,
+                  contentDescription = "Call",
                   modifier = Modifier.size(16.dp)
                 )
                 Spacer(modifier = Modifier.width(6.dp))
                 Text(
-                  text = if (language == AppLanguage.BENGALI) "০১৭০০-০০০০০০" else "+880 1700 000000",
+                  text = "+8801773326910",
                   fontWeight = FontWeight.Bold,
-                  fontSize = 12.sp
+                  fontSize = 11.sp
                 )
               }
 
-              OutlinedButton(
+              // WhatsApp
+              Button(
                 onClick = {
-                  val url = "https://api.whatsapp.com/send?phone=+8801700000000&text=Hello%20Pran%20Sanchar"
+                  val url = "https://api.whatsapp.com/send?phone=+8801773326910&text=Hello%20Pran%20Sanchar%20Organization"
                   val intent = Intent(Intent.ACTION_VIEW).apply {
                     data = Uri.parse(url)
                   }
                   context.startActivity(intent)
                 },
                 modifier = Modifier
-                  .weight(1f)
-                  .height(40.dp)
+                  .weight(0.9f)
+                  .height(42.dp)
                   .testTag("home_whatsapp_helpline_button"),
-                border = BorderStroke(1.dp, Color.White.copy(alpha = 0.6f)),
-                colors = ButtonDefaults.outlinedButtonColors(contentColor = Color.White),
-                shape = RoundedCornerShape(8.dp)
+                colors = ButtonDefaults.buttonColors(
+                  containerColor = Color(0xFF25D366),
+                  contentColor = Color.White
+                ),
+                shape = RoundedCornerShape(10.dp)
               ) {
+                Icon(
+                  imageVector = Icons.Default.Chat,
+                  contentDescription = "WhatsApp",
+                  modifier = Modifier.size(16.dp),
+                  tint = Color.White
+                )
+                Spacer(modifier = Modifier.width(6.dp))
                 Text(
                   text = "WhatsApp",
                   fontWeight = FontWeight.Bold,
-                  fontSize = 12.sp
+                  fontSize = 12.sp,
+                  color = Color.White
                 )
+              }
+            }
+
+            Spacer(modifier = Modifier.height(10.dp))
+
+            // Email Contact Button
+            Box(
+              modifier = Modifier
+                .fillMaxWidth()
+                .clip(RoundedCornerShape(10.dp))
+                .background(Color.White.copy(alpha = 0.12f))
+                .clickable {
+                  val intent = Intent(Intent.ACTION_SENDTO).apply {
+                    data = Uri.parse("mailto:Rittikovroofficial@gmail.com")
+                    putExtra(Intent.EXTRA_SUBJECT, "Pran Sanchar Blood Donation Organization Inquiry")
+                  }
+                  context.startActivity(intent)
+                }
+                .padding(horizontal = 14.dp, vertical = 10.dp)
+                .testTag("home_email_contact_button")
+            ) {
+              Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+              ) {
+                Icon(
+                  imageVector = Icons.Default.Email,
+                  contentDescription = "Email",
+                  tint = Color(0xFFFFCC00),
+                  modifier = Modifier.size(18.dp)
+                )
+                Spacer(modifier = Modifier.width(10.dp))
+                Column {
+                  Text(
+                    text = if (language == AppLanguage.BENGALI) "অফিসিয়াল ইমেইল" else "Official Email",
+                    fontSize = 10.sp,
+                    color = Color.White.copy(alpha = 0.7f)
+                  )
+                  Text(
+                    text = "Rittikovroofficial@gmail.com",
+                    fontSize = 13.sp,
+                    fontWeight = FontWeight.Bold,
+                    color = Color.White
+                  )
+                }
               }
             }
           }

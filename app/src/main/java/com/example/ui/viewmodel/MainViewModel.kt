@@ -27,7 +27,8 @@ enum class Screen {
   CAMPAIGNS,
   DASHBOARD,
   REGISTER_DONOR,
-  CREATE_REQUEST
+  CREATE_REQUEST,
+  LOGIN
 }
 
 class MainViewModel(application: Application) : AndroidViewModel(application) {
@@ -130,6 +131,32 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
 
   val currentUserProfile: StateFlow<UserProfile?> = repository.currentUserProfile
     .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5000), null)
+
+  // User Authentication State
+  private val _isLoggedIn = MutableStateFlow(true)
+  val isLoggedIn: StateFlow<Boolean> = _isLoggedIn.asStateFlow()
+
+  val userEmailState = MutableStateFlow("tanvir.hasan@example.bd")
+
+  fun login(email: String, pass: String, onSuccess: () -> Unit) {
+    if (email.isBlank() || !email.contains("@")) {
+      showToast(if (_language.value == AppLanguage.BENGALI) "সঠিক ইমেইল ঠিকানা দিন" else "Please enter a valid email")
+      return
+    }
+    if (pass.length < 4) {
+      showToast(if (_language.value == AppLanguage.BENGALI) "পাসওয়ার্ড নুন্যতম ৪ অক্ষরের হতে হবে" else "Password must be at least 4 characters")
+      return
+    }
+    _isLoggedIn.value = true
+    userEmailState.value = email
+    showToast(if (_language.value == AppLanguage.BENGALI) "লগইন সফল হয়েছে! স্বাগতম।" else "Logged in successfully! Welcome.")
+    onSuccess()
+  }
+
+  fun logout() {
+    _isLoggedIn.value = false
+    showToast(if (_language.value == AppLanguage.BENGALI) "সফলভাবে লগআউট হয়েছে।" else "Logged out successfully.")
+  }
 
   // Super Admin security
   private val _isAdminUnlocked = MutableStateFlow(false)

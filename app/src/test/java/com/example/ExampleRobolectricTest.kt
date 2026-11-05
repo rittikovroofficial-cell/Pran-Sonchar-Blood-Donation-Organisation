@@ -50,4 +50,10 @@ class ExampleRobolectricTest {
     assertNotNull(DonorAvailability.AVAILABLE)
     assertEquals("Available to Donate", DonorAvailability.AVAILABLE.titleEn)
   }
+
+  @Test
+  fun `verify Screen LOGIN enum exists`() {
+    val screens = com.example.ui.viewmodel.Screen.entries
+    assertTrue(screens.contains(com.example.ui.viewmodel.Screen.LOGIN))
+  }
 }

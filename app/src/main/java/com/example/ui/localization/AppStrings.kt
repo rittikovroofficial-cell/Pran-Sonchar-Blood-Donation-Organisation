@@ -249,4 +249,59 @@ object AppStrings {
     AppLanguage.BENGALI -> "যাচাইকৃত রক্তদাতা"
     AppLanguage.ENGLISH -> "Verified Donor"
   }
+
+  fun loginTitle(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "অ্যাকাউন্টে লগইন করুন"
+    AppLanguage.ENGLISH -> "Sign In to Your Account"
+  }
+
+  fun emailLabel(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "ইমেইল ঠিকানা"
+    AppLanguage.ENGLISH -> "Email Address"
+  }
+
+  fun passwordLabel(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "পাসওয়ার্ড"
+    AppLanguage.ENGLISH -> "Password"
+  }
+
+  fun forgotPassword(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "পাসওয়ার্ড ভুলে গেছেন?"
+    AppLanguage.ENGLISH -> "Forgot Password?"
+  }
+
+  fun signInBtn(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "লগইন করুন"
+    AppLanguage.ENGLISH -> "Sign In"
+  }
+
+  fun rememberMe(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "আমাকে মনে রাখুন"
+    AppLanguage.ENGLISH -> "Remember Me"
+  }
+
+  fun noAccountText(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "কোনো অ্যাকাউন্ট নেই?"
+    AppLanguage.ENGLISH -> "Don't have an account?"
+  }
+
+  fun downloadAppTitle(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "মোবাইল অ্যাপ ডাউনলোড করুন"
+    AppLanguage.ENGLISH -> "Download Mobile App"
+  }
+
+  fun downloadAppDesc(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "জরুরি মুহূর্তে অফলাইনে রক্তদাতা খুঁজতে সরাসরি আপনার ফোনে অ্যাপটি ইনস্টল রাখুন।"
+    AppLanguage.ENGLISH -> "Keep the app installed on your phone to find voluntary donors even with low connectivity."
+  }
+
+  fun downloadApkBtn(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "APK ডাউনলোড করুন"
+    AppLanguage.ENGLISH -> "Download APK"
+  }
+
+  fun shareAppLinkBtn(lang: AppLanguage): String = when (lang) {
+    AppLanguage.BENGALI -> "অ্যাপ লিংক শেয়ার করুন"
+    AppLanguage.ENGLISH -> "Share App Link"
+  }
 }

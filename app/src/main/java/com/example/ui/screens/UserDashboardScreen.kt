@@ -2,6 +2,7 @@ package com.example.ui.screens
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,15 +18,21 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import android.content.Intent
+import android.net.Uri
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.AdminPanelSettings
+import androidx.compose.material.icons.filled.Chat
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.DateRange
 import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.material.icons.filled.PersonAdd
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.Security
 import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material3.AlertDialog
@@ -77,6 +84,7 @@ fun UserDashboardScreen(
   onNavigateToScreen: (Screen) -> Unit,
   onOpenAdmin: () -> Unit
 ) {
+  val context = LocalContext.current
   val language by viewModel.language.collectAsState()
   val currentUser by viewModel.currentUserProfile.collectAsState()
   val allDonors by viewModel.filteredDonors.collectAsState()
@@ -153,6 +161,25 @@ fun UserDashboardScreen(
               bloodGroup = currentUser?.bloodGroup ?: "O+",
               isSmall = false
             )
+          }
+
+          Spacer(modifier = Modifier.height(10.dp))
+
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.End
+          ) {
+            OutlinedButton(
+              onClick = { onNavigateToScreen(Screen.LOGIN) },
+              shape = RoundedCornerShape(8.dp),
+              modifier = Modifier.height(34.dp)
+            ) {
+              Text(
+                text = if (language == AppLanguage.BENGALI) "লগইন / অন্য অ্যাকাউন্ট" else "Login / Switch Account",
+                fontSize = 11.sp,
+                fontWeight = FontWeight.SemiBold
+              )
+            }
           }
         }
       }
@@ -378,6 +405,129 @@ fun UserDashboardScreen(
           }
         }
       }
+
+      Spacer(modifier = Modifier.height(14.dp))
+    }
+
+    // 4. Organization Contact & Support Card
+    item {
+      Card(
+        modifier = Modifier
+          .fillMaxWidth()
+          .testTag("dashboard_contact_card"),
+        shape = RoundedCornerShape(16.dp),
+        colors = CardDefaults.cardColors(containerColor = Color.White),
+        border = BorderStroke(1.dp, CardBorder)
+      ) {
+        Column(modifier = Modifier.padding(18.dp)) {
+          Row(verticalAlignment = Alignment.CenterVertically) {
+            Icon(
+              imageVector = Icons.Default.Phone,
+              contentDescription = null,
+              tint = BloodRedPrimary,
+              modifier = Modifier.size(20.dp)
+            )
+            Spacer(modifier = Modifier.width(8.dp))
+            Text(
+              text = if (language == AppLanguage.BENGALI) "অফিসিয়াল যোগাযোগ ও সহায়তা" else "Official Support & Contact",
+              fontWeight = FontWeight.Bold,
+              fontSize = 15.sp,
+              color = DarkNavy
+            )
+          }
+
+          Spacer(modifier = Modifier.height(12.dp))
+
+          // Phone & WhatsApp
+          Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(8.dp)
+          ) {
+            Button(
+              onClick = {
+                val intent = Intent(Intent.ACTION_DIAL).apply {
+                  data = Uri.parse("tel:+8801773326910")
+                }
+                context.startActivity(intent)
+              },
+              modifier = Modifier
+                .weight(1.1f)
+                .height(40.dp)
+                .testTag("dashboard_call_button"),
+              colors = ButtonDefaults.buttonColors(containerColor = BloodRedPrimary),
+              shape = RoundedCornerShape(8.dp)
+            ) {
+              Icon(Icons.Default.Phone, contentDescription = null, modifier = Modifier.size(14.dp))
+              Spacer(modifier = Modifier.width(4.dp))
+              Text("+8801773326910", fontSize = 11.sp, fontWeight = FontWeight.Bold)
+            }
+
+            Button(
+              onClick = {
+                val url = "https://api.whatsapp.com/send?phone=+8801773326910&text=Hello%20Pran%20Sanchar"
+                val intent = Intent(Intent.ACTION_VIEW).apply {
+                  data = Uri.parse(url)
+                }
+                context.startActivity(intent)
+              },
+              modifier = Modifier
+                .weight(0.9f)
+                .height(40.dp)
+                .testTag("dashboard_whatsapp_button"),
+              colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF25D366)),
+              shape = RoundedCornerShape(8.dp)
+            ) {
+              Icon(Icons.Default.Chat, contentDescription = null, modifier = Modifier.size(14.dp), tint = Color.White)
+              Spacer(modifier = Modifier.width(4.dp))
+              Text("WhatsApp", fontSize = 11.sp, fontWeight = FontWeight.Bold, color = Color.White)
+            }
+          }
+
+          Spacer(modifier = Modifier.height(10.dp))
+
+          // Email
+          Box(
+            modifier = Modifier
+              .fillMaxWidth()
+              .clip(RoundedCornerShape(8.dp))
+              .background(Color(0xFFF1F5F9))
+              .clickable {
+                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                  data = Uri.parse("mailto:Rittikovroofficial@gmail.com")
+                  putExtra(Intent.EXTRA_SUBJECT, "Pran Sanchar Blood Donation Inquiry")
+                }
+                context.startActivity(intent)
+              }
+              .padding(horizontal = 12.dp, vertical = 10.dp)
+              .testTag("dashboard_email_button")
+          ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+              Icon(
+                imageVector = Icons.Default.Email,
+                contentDescription = null,
+                tint = BloodRedPrimary,
+                modifier = Modifier.size(18.dp)
+              )
+              Spacer(modifier = Modifier.width(8.dp))
+              Column {
+                Text(
+                  text = if (language == AppLanguage.BENGALI) "ইমেইল পাঠান" else "Send Email",
+                  fontSize = 10.sp,
+                  color = TextSecondary
+                )
+                Text(
+                  text = "Rittikovroofficial@gmail.com",
+                  fontSize = 12.sp,
+                  fontWeight = FontWeight.Bold,
+                  color = DarkNavy
+                )
+              }
+            }
+          }
+        }
+      }
+
+      Spacer(modifier = Modifier.height(24.dp))
     }
   }
 
