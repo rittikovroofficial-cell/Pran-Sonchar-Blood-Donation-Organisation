@@ -1,0 +1,6 @@
+{
+  "name": "Pran Sanchar",
+  "description": "প্রাণ সঞ্চার রক্তদান সংস্থা - Voluntary blood donation organization platform for Bangladesh. Find donors, emergency blood requests, campaigns & community.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
